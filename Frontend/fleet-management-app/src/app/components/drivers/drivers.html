@@ -1,0 +1,101 @@
+    <div class="drivers-container">
+      <div class="header">
+        <h2>Driver Management</h2>
+        <button class="btn btn-primary" (click)="showAddForm = !showAddForm">
+          {{ showAddForm ? 'Cancel' : '+ Add Driver' }}
+        </button>
+      </div>
+
+      @if (showAddForm) {
+        <div class="form-card">
+          <h3>{{ editingDriver ? 'Edit Driver' : 'Add New Driver' }}</h3>
+          <form [formGroup]="driverForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="form-group">
+                <label>First Name *</label>
+                <input type="text" class="form-control" formControlName="firstName">
+              </div>
+              <div class="form-group">
+                <label>Last Name *</label>
+                <input type="text" class="form-control" formControlName="lastName">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>License Number *</label>
+                <input type="text" class="form-control" formControlName="licenseNumber">
+              </div>
+              <div class="form-group">
+                <label>Phone Number *</label>
+                <input type="text" class="form-control" formControlName="phoneNumber">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Email *</label>
+                <input type="email" class="form-control" formControlName="email">
+              </div>
+              <div class="form-group">
+                <label>Status *</label>
+                <select class="form-control" formControlName="status">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                  <option value="OnLeave">On Leave</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Hire Date *</label>
+              <input type="date" class="form-control" formControlName="hireDate">
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="driverForm.invalid || loading">
+              {{ loading ? 'Saving...' : (editingDriver ? 'Update' : 'Add Driver') }}
+            </button>
+          </form>
+        </div>
+      }
+
+      @if (error) {
+        <div class="alert alert-danger">{{ error }}</div>
+      }
+
+      @if (success) {
+        <div class="alert alert-success">{{ success }}</div>
+      }
+
+      <div class="drivers-grid">
+        @for (driver of drivers; track driver.id) {
+          <div class="driver-card">
+            <div class="driver-header">
+              <h3>{{ driver.firstName }} {{ driver.lastName }}</h3>
+              <span class="badge" [class]="'badge-' + driver.status.toLowerCase()">
+                {{ driver.status }}
+              </span>
+            </div>
+            <div class="driver-details">
+              <p><strong>License:</strong> {{ driver.licenseNumber }}</p>
+              <p><strong>Phone:</strong> {{ driver.phoneNumber }}</p>
+              <p><strong>Email:</strong> {{ driver.email }}</p>
+              <p><strong>Hire Date:</strong> {{ driver.hireDate | date:'mediumDate' }}</p>
+              @if (driver.vehicleId) {
+                <p><strong>Assigned Vehicle:</strong> {{ driver.vehicleId }}</p>
+              } @else {
+                <p><strong>Status:</strong> Not assigned to any vehicle</p>
+              }
+            </div>
+            <div class="driver-actions">
+              <button class="btn btn-sm btn-secondary" (click)="editDriver(driver)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteDriver(driver.id)">Delete</button>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-state">
+            <p>No drivers found. Add your first driver!</p>
+          </div>
+        }
+      </div>
+    </div>

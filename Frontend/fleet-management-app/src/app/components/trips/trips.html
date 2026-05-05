@@ -1,0 +1,157 @@
+ <div class="trips-container">
+      <div class="header">
+        <h2>Trip Management</h2>
+        <button class="btn btn-primary" (click)="showAddForm = !showAddForm">
+          {{ showAddForm ? 'Cancel' : '+ Start New Trip' }}
+        </button>
+      </div>
+
+      @if (showAddForm) {
+        <div class="form-card">
+          <h3>Start New Trip</h3>
+          <form [formGroup]="tripForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Vehicle *</label>
+                <select class="form-control" formControlName="vehicleID">
+                  <option value="">Select Vehicle</option>
+                  @for (vehicle of vehicles; track vehicle.vehicleID) {
+                    <option [value]="vehicle.vehicleID">{{ vehicle.licensePlate }} - {{ vehicle.model }}</option>
+                  }
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Driver *</label>
+                <select class="form-control text-primary"  formControlName="driverID">
+                  <option value="">Select Driver</option>
+                  @for (driver of drivers; track driver.driverID) {
+                    <option [value]="driver.driverID"> {{ driver.email }} {{ driver.lastName }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Start Location *</label>
+              <input type="text" class="form-control" formControlName="startLocation">
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="tripForm.invalid || loading">
+              {{ loading ? 'Starting...' : 'Start Trip' }}
+            </button>
+          </form>
+        </div>
+      }
+
+      @if (error) {
+        <div class="alert alert-danger">{{ error }}</div>
+      }
+
+      @if (success) {
+        <div class="alert alert-success">{{ success }}</div>
+      }
+
+      <div class="trips-list">
+        @for (trip of trips; track trip.tripID) {
+          <div class="trip-card">
+            <div class="trip-header">
+              <h3>Trip #{{ trip.tripID.substring(0, 8) }}</h3>
+              <span class="badge" [class]="'badge-' + trip.status.toLowerCase()">
+                {{ trip.status }}
+              </span>
+            </div>
+            <div class="trip-details">
+              <div class="detail-row">
+                <div class="detail-item">
+                  <strong>Vehicle ID:</strong> {{ trip.vehicleID.substring(0, 8) }}...
+                </div>
+                <div class="detail-item">
+                  <strong>Driver ID:</strong> {{ trip.driverID.substring(0, 8) }}...
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-item">
+                  <strong>Start:</strong> {{ trip.startLocation }}
+                </div>
+                <div class="detail-item">
+                  <strong>End:</strong> {{ trip.endLocation || 'In Progress' }}
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-item">
+                  <strong>Start Time:</strong> {{ trip.startTime | date:'short' }}
+                </div>
+                <div class="detail-item">
+                  <strong>End Time:</strong> {{ trip.endTime ? (trip.endTime | date:'short') : 'N/A' }}
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-item">
+                  <strong>Distance:</strong> {{ trip.distanceTraveled }} km
+                </div>
+                <div class="detail-item">
+                  <strong>Avg Speed:</strong> {{ trip.averageSpeed }} km/h
+                </div>
+              </div>
+              <div class="detail-row">
+                <div class="detail-item">
+                  <strong>Max Speed:</strong> {{ trip.maxSpeed }} km/h
+                </div>
+                <div class="detail-item">
+                  <strong>Fuel Consumed:</strong> {{ trip.fuelConsumed }} L
+                </div>
+              </div>
+            </div>
+            @if (trip.status === 'InProgress') {
+              <div class="trip-actions">
+                <button class="btn btn-sm btn-warning" (click)="showEndTripForm(trip)">End Trip</button>
+              </div>
+            }
+          </div>
+        } @empty {
+          <div class="empty-state">
+            <p>No trips found. Start your first trip!</p>
+          </div>
+        }
+      </div>
+
+      @if (endingTrip) {
+        <div class="modal-backdrop" (click)="cancelEndTrip()">
+          <div class="modal-content" (click)="$event.stopPropagation()">
+            <h3>End Trip</h3>
+            <form [formGroup]="endTripForm" (ngSubmit)="endTrip()">
+              <div class="form-group">
+                <label>End Location *</label>
+                <input type="text" class="form-control" formControlName="endLocation">
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Distance Traveled (km) *</label>
+                  <input type="number" class="form-control" formControlName="distanceTraveled">
+                </div>
+                <div class="form-group">
+                  <label>Fuel Consumed (L) *</label>
+                  <input type="number" step="0.1" class="form-control" formControlName="fuelConsumed">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Average Speed (km/h) *</label>
+                  <input type="number" class="form-control" formControlName="averageSpeed">
+                </div>
+                <div class="form-group">
+                  <label>Max Speed (km/h) *</label>
+                  <input type="number" class="form-control" formControlName="maxSpeed">
+                </div>
+              </div>
+              <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" (click)="cancelEndTrip()">Cancel</button>
+                <button type="submit" class="btn btn-primary" [disabled]="endTripForm.invalid || loading">
+                  {{ loading ? 'Ending...' : 'End Trip' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      }
+    </div>

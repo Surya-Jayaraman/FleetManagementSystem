@@ -1,0 +1,103 @@
+<div class="vehicles-container">
+      <div class="header">
+        <h2>Vehicle Management</h2>
+        <button class="btn btn-primary" (click)="showAddForm = !showAddForm">
+          {{ showAddForm ? 'Cancel' : '+ Add Vehicle' }}
+        </button>
+      </div>
+
+      @if (showAddForm) {
+        <div class="form-card">
+          <h3>{{ editingVehicle ? 'Edit Vehicle' : 'Add New Vehicle' }}</h3>
+          <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+              <div class="form-group">
+                <label>License Plate *</label>
+                <input type="text" class="form-control" formControlName="licensePlate">
+              </div>
+              <div class="form-group">
+                <label>Model *</label>
+                <input type="text" class="form-control" formControlName="model">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Status *</label>
+                <select class="form-control" formControlName="status">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                  <option value="Maintenance">Maintenance</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Location *</label>
+                <input type="text" class="form-control" formControlName="lastKnownLocation">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Latitude *</label>
+                <input type="number" step="0.0001" class="form-control" formControlName="latitude">
+              </div>
+              <div class="form-group">
+                <label>Longitude *</label>
+                <input type="number" step="0.0001" class="form-control" formControlName="longitude">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Current Speed (km/h)</label>
+                <input type="number" class="form-control" formControlName="currentSpeed">
+              </div>
+              <div class="form-group">
+                <label>Fuel Level (%)</label>
+                <input type="number" class="form-control" formControlName="fuelLevel">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="vehicleForm.invalid || loading">
+              {{ loading ? 'Saving...' : (editingVehicle ? 'Update' : 'Add Vehicle') }}
+            </button>
+          </form>
+        </div>
+      }
+
+      @if (error) {
+        <div class="alert alert-danger">{{ error }}</div>
+      }
+
+      @if (success) {
+        <div class="alert alert-success">{{ success }}</div>
+      }
+
+      <div class="vehicles-grid">
+        @for (vehicle of vehicles; track vehicle.vehicleID) {
+          <div class="vehicle-card">
+            <div class="vehicle-header">
+              <h3>{{ vehicle.licensePlate }}</h3>
+              <span class="badge" [class]="'badge-' + vehicle.status.toLowerCase()">
+                {{ vehicle.status }}
+              </span>
+            </div>
+            <div class="vehicle-details">
+              <p><strong>Model:</strong> {{ vehicle.model }}</p>
+              <p><strong>Location:</strong> {{ vehicle.lastKnownLocation }}</p>
+              <p><strong>Speed:</strong> {{ vehicle.currentSpeed }} km/h</p>
+              <p><strong>Fuel:</strong> {{ vehicle.fuelLevel }}%</p>
+              <p><strong>Last Updated:</strong> {{ vehicle.lastUpdated | date:'short' }}</p>
+            </div>
+            <div class="vehicle-actions">
+              <button class="btn btn-sm btn-secondary" (click)="editVehicle(vehicle)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteVehicle(vehicle.vehicleID)">Delete</button>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-state">
+            <p>No vehicles found. Add your first vehicle!</p>
+          </div>
+        }
+      </div>
+    </div>

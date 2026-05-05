@@ -1,0 +1,150 @@
+ <div class="register-container">
+      <div class="register-card">
+        <div class="text-center mb-4">
+          <div class="logo-circle mx-auto mb-3">
+            <i class="bi bi-person-plus fs-1 text-white"></i>
+          </div>
+          <h2 class="fw-bold mb-1">Create Account</h2>
+          <p class="text-muted">Sign up for Fleet Management</p>
+        </div>
+        
+        @if (error) {
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-circle me-2"></i>{{ error }}
+            <button type="button" class="btn-close" (click)="error = ''"></button>
+          </div>
+        }
+        
+        @if (success) {
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>{{ success }}
+            <button type="button" class="btn-close" (click)="success = ''"></button>
+          </div>
+        }
+        
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="username" class="form-label">
+              <i class="bi bi-person me-1"></i>Username
+            </label>
+            <input 
+              type="text" 
+              id="username" 
+              class="form-control form-control-lg" 
+              formControlName="username"
+              placeholder="Choose a username"
+              [class.is-invalid]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+            @if (registerForm.get('username')?.hasError('required') && registerForm.get('username')?.touched) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Username is required
+              </div>
+            }
+            @if (registerForm.get('username')?.hasError('minlength') && registerForm.get('username')?.touched) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Username must be at least 3 characters
+              </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">
+              <i class="bi bi-envelope me-1"></i>Email
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              class="form-control form-control-lg" 
+              formControlName="email"
+              placeholder="Enter your email"
+              [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            @if (registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Email is required
+              </div>
+            }
+            @if (registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Please enter a valid email
+              </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">
+              <i class="bi bi-lock me-1"></i>Password
+            </label>
+            <input 
+              type="password" 
+              id="password" 
+              class="form-control form-control-lg" 
+              formControlName="password"
+              placeholder="Create a password"
+              [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            @if (registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Password is required
+              </div>
+            }
+            @if (registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Password must be at least 6 characters
+              </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="confirmPassword" class="form-label">
+              <i class="bi bi-lock-fill me-1"></i>Confirm Password
+            </label>
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              class="form-control form-control-lg" 
+              formControlName="confirmPassword"
+              placeholder="Confirm your password"
+              [class.is-invalid]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
+            @if (registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Please confirm your password
+              </div>
+            }
+            @if (registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched) {
+              <div class="invalid-feedback d-block">
+                <i class="bi bi-exclamation-circle me-1"></i>Passwords do not match
+              </div>
+            }
+          </div>
+
+          <div class="mb-3">
+            <label for="role" class="form-label">
+              <i class="bi bi-shield me-1"></i>Role
+            </label>
+            <select 
+              id="role" 
+              class="form-select form-select-lg" 
+              formControlName="role">
+              <option value="User">User</option>
+              <option value="Manager">Manager</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg w-100 mb-3" [disabled]="loading || registerForm.invalid">
+            @if (loading) {
+              <span class="spinner-border spinner-border-sm me-2"></span>
+              <span>Creating Account...</span>
+            } @else {
+              <i class="bi bi-person-check me-2"></i>
+              <span>Sign Up</span>
+            }
+          </button>
+        </form>
+        
+        <div class="text-center mt-3">
+          <p class="mb-0">
+            Already have an account? 
+            <a routerLink="/login" class="text-decoration-none fw-bold">Sign In</a>
+          </p>
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,74 @@
+<div class="notifications-container">
+      <div class="header">
+        <h2>Notifications & Alerts</h2>
+        <div class="filters">
+          <button class="btn btn-sm" [class.btn-primary]="selectedSource === 'all'" (click)="filterBySource('all')">All</button>
+          <button class="btn btn-sm" [class.btn-primary]="selectedSource === 'Kafka'" (click)="filterBySource('Kafka')">Trips (Kafka)</button>
+          <button class="btn btn-sm" [class.btn-primary]="selectedSource === 'RabbitMQ'" (click)="filterBySource('RabbitMQ')">Drivers (RabbitMQ)</button>
+          <button class="btn btn-sm btn-secondary" (click)="loadNotifications()">🔄 Refresh</button>
+        </div>
+      </div>
+
+      @if (stats) {
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-value">{{ stats.total }}</div>
+            <div class="stat-label">Total</div>
+          </div>
+          <div class="stat-card success">
+            <div class="stat-value">{{ stats.processed }}</div>
+            <div class="stat-label">Processed</div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-value">{{ stats.pending }}</div>
+            <div class="stat-label">Pending</div>
+          </div>
+          <div class="stat-card danger">
+            <div class="stat-value">{{ stats.failed }}</div>
+            <div class="stat-label">Failed</div>
+          </div>
+        </div>
+      }
+
+      @if (error) {
+        <div class="alert alert-danger">{{ error }}</div>
+      }
+
+      <div class="notifications-list">
+        @for (notification of filteredNotifications; track notification.id) {
+          <div class="notification-card" [class]="'source-' + notification.source">
+            <div class="notification-header">
+              <div class="notification-title">
+                <span class="badge badge-source">{{ notification.source }}</span>
+                <span class="event-name">{{ notification.event }}</span>
+              </div>
+              <span class="badge" [class]="'badge-' + notification.status.toLowerCase()">
+                {{ notification.status }}
+              </span>
+            </div>
+            <div class="notification-body">
+              <p class="message">{{ notification.message }}</p>
+              @if (notification.payload) {
+                <details>
+                  <summary>View Payload</summary>
+                  <pre>{{ formatPayload(notification.payload) }}</pre>
+                </details>
+              }
+            </div>
+            <div class="notification-footer">
+              <small>
+                <strong>Received:</strong> {{ notification.receivedAt | date:'medium' }}
+                @if (notification.processedAt) {
+                  <span class="separator">|</span>
+                  <strong>Processed:</strong> {{ notification.processedAt | date:'medium' }}
+                }
+              </small>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-state">
+            <p>No notifications found.</p>
+          </div>
+        }
+      </div>
+    </div>

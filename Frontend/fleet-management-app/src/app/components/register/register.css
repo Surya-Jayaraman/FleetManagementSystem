@@ -1,0 +1,100 @@
+ .register-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 1rem;
+    }
+
+    .register-card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      width: 100%;
+      max-width: 500px;
+      animation: slideUp 0.5s ease;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo-circle {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    }
+
+    h2 {
+      color: #1f2937;
+      font-size: 1.75rem;
+    }
+
+    .form-control-lg, .form-select-lg {
+      padding: 0.875rem 1rem;
+      border-radius: 0.5rem;
+      border: 2px solid #e5e7eb;
+      transition: all 0.3s ease;
+    }
+
+    .form-control-lg:focus, .form-select-lg:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    }
+
+    .btn-primary {
+      padding: 0.875rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    a {
+      color: #667eea;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: #5568d3;
+    }
+
+    /* Custom scrollbar for card */
+    .register-card::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .register-card::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .register-card::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 10px;
+    }
+
+    .register-card::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }

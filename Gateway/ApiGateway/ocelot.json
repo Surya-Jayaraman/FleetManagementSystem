@@ -1,0 +1,71 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/Auth/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "localhost", "Port": 5226 }],
+      "UpstreamPathTemplate": "/auth-service/api/auth/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "SwaggerKey": "auth"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Vehicles/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "localhost", "Port": 5046 }],
+      "UpstreamPathTemplate": "/vehicle-service/api/Vehicles/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "SwaggerKey": "vehicle",
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Drivers/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "localhost", "Port": 5232 }],
+      "UpstreamPathTemplate": "/driver-service/api/Drivers/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "SwaggerKey": "driver",
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Trips/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "localhost", "Port": 5189 }],
+      "UpstreamPathTemplate": "/trip-service/api/Trips/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "SwaggerKey": "trip",
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Notifications/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "localhost", "Port": 5010 }],
+      "UpstreamPathTemplate": "/alert-service/api/Notifications/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "SwaggerKey": "alert",
+      "AuthenticationOptions": { "AuthenticationProviderKey": "Bearer" }
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "auth",
+      "Config": [{ "Name": "Auth Service", "Version": "v1", "Url": "http://localhost:5226/swagger/v1/swagger.json" }]
+    },
+    {
+      "Key": "vehicle",
+      "Config": [{ "Name": "Vehicle Service", "Version": "v1", "Url": "http://localhost:5046/swagger/v1/swagger.json" }]
+    },
+    {
+      "Key": "driver",
+      "Config": [{ "Name": "Driver Service", "Version": "v1", "Url": "http://localhost:5232/swagger/v1/swagger.json" }]
+    },
+    {
+      "Key": "trip",
+      "Config": [{ "Name": "Trip Service", "Version": "v1", "Url": "http://localhost:5189/swagger/v1/swagger.json" }]
+    },
+    {
+      "Key": "alert",
+      "Config": [{ "Name": "Alert Service", "Version": "v1", "Url": "http://localhost:5010/swagger/v1/swagger.json" }]
+    }
+  ],
+  "GlobalConfiguration": { "BaseUrl": "https://localhost:5000" }
+}

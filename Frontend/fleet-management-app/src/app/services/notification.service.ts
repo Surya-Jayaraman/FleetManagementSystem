@@ -25,7 +25,7 @@ export interface NotificationStats {
   providedIn: 'root'
 })
 export class NotificationService {
-  private readonly API_URL = 'https://localhost:5000/alert-service/api/Notifications';
+  private readonly API_URL = 'http://localhost:5000/alert-service/api/Notifications';
 
   constructor(private http: HttpClient) { }
 

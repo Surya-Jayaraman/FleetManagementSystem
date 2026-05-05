@@ -7,7 +7,7 @@ import { Driver, CreateDriverRequest, UpdateDriverRequest, AssignVehicleRequest 
   providedIn: 'root'
 })
 export class DriverService {
-  private readonly API_URL = 'https://localhost:5000/driver-service/api/Drivers';
+  private readonly API_URL = 'http://localhost:5000/driver-service/api/Drivers';
 
   constructor(private http: HttpClient) { }
 

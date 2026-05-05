@@ -7,7 +7,7 @@ import { Trip, CreateTripRequest, EndTripRequest } from '../models/trip.model';
   providedIn: 'root'
 })
 export class TripService {
-  private readonly API_URL = 'https://localhost:5000/trip-service/api/Trips';
+  private readonly API_URL = 'http://localhost:5000/trip-service/api/Trips';
 
   constructor(private http: HttpClient) { }
 

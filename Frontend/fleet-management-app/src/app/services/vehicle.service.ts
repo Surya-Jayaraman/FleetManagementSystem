@@ -7,7 +7,7 @@ import { Vehicle, CreateVehicleRequest, UpdateVehicleRequest, VehicleLocationUpd
   providedIn: 'root'
 })
 export class VehicleService {
-  private readonly API_URL = 'https://localhost:5000/vehicle-service/api/Vehicles';
+  private readonly API_URL = 'http://localhost:5000/vehicle-service/api/Vehicles';
 
   constructor(private http: HttpClient) { }
 
